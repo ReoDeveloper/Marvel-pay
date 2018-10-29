@@ -4,14 +4,6 @@ import com.reodeveloper.marvelpay.data.Specification
 
 open class Repository<T>(val datasource: DataSource<T>) {
 
-    open fun store(item: T) {
-        datasource.store(item)
-    }
-
-    open fun store(items: List<T>) {
-        datasource.store(items)
-    }
-
     open fun getAll(): List<T> {
         return datasource.getAll()
     }

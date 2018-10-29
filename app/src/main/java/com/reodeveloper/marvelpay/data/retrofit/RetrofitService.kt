@@ -7,8 +7,10 @@ import retrofit2.http.Query
 interface RetrofitService {
     @GET("characters")
     fun getCharacters(
-        @Query("apiKey") apiKey: String,
+        @Query("apikey") apiKey: String,
         @Query("limit") limit: Int,
-        @Query("orderBy") orderBy: String
+        @Query("orderBy") orderBy: String,
+        @Query("ts") ts: String,
+        @Query("hash") hash: String
     ): Call<ApiResult>
 }
