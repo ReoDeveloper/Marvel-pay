@@ -5,57 +5,66 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.util.Log
-import com.reodeveloper.common.RepositoryProvider
-import com.reodeveloper.common.usecase.Executor
-import com.reodeveloper.common.usecase.ResultList
+import android.view.View
+import com.reodeveloper.common.UseCaseProvider
 import com.reodeveloper.marvelpay.R
 import com.reodeveloper.marvelpay.domain.model.Contact
-import com.reodeveloper.marvelpay.domain.usecase.GetAllContacts
+import com.reodeveloper.marvelpay.ui.showMessage
+import kotlinx.android.synthetic.main.activity_contacts_list.*
 
 
-class ContactsListActivity : AppCompatActivity() {
-    companion object {
-        val PERMISSIONS_REQUEST_READ_CONTACTS = 173
-    }
+class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
+
+    private lateinit var presenter: ContactsListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts_list)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), PERMISSIONS_REQUEST_READ_CONTACTS)
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-            retreiveContacts()
-        }
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-
+        presenter = ContactsListPresenter(this, UseCaseProvider.provideGetAllContactsUseCase(this))
+        presenter.init()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted
-                retreiveContacts()
+    override fun showError(message: String) {
+        this.showMessage(message)
+    }
+
+    override fun showError(message: Int) {
+        this.showMessage(getString(message))
+    }
+
+    override fun displayItems(items: List<Contact>) {
+        Log.d("Reo", "received list size = " + items.size)
+        recyclerView.adapter = ContactsAdapter(items) { presenter.onItemTap(it) }
+    }
+
+    override fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        progressBar.visibility = View.GONE
+    }
+
+    override fun requestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_CONTACTS),
+                    presenter.getRequestPermissionCode()
+                )
             } else {
-                Log.e("Contact", "Permission NOT granted")
+                presenter.onPermissionGranted()
             }
         }
     }
 
-    private fun retreiveContacts() {
-        Executor.getInstance()
-            .execute(GetAllContacts(RepositoryProvider.provideContactRepository(this)), object : ResultList<Contact> {
-                override fun success(items: List<Contact>) {
-                    items.forEach { Log.d("Contact", it.name + " - " + it.phone + " - " + it.avatar) }
-                }
-
-                override fun error(message: String) {
-                    Log.d("Contact", message)
-                }
-            })
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        presenter.onRequestPermissionsResult(requestCode, grantResults)
     }
 }

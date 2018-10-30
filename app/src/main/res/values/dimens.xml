@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_XXS">1dp</dimen>
+    <dimen name="margin_XS">2dp</dimen>
+    <dimen name="margin_S">4dp</dimen>
+    <dimen name="margin_M">8dp</dimen>
+    <dimen name="margin_L">16dp</dimen>
+    <dimen name="margin_XL">24dp</dimen>
+    <dimen name="margin_XXL">32dp</dimen>
+
+    <dimen name="text_XXS">10sp</dimen>
+    <dimen name="text_XS">12sp</dimen>
+    <dimen name="text_S">14sp</dimen>
+    <dimen name="text_M">16sp</dimen>
+    <dimen name="text_L">20sp</dimen>
+    <dimen name="text_XL">24sp</dimen>
+    <dimen name="text_XXL">34sp</dimen>
+
+    <dimen name="height_S">42dp</dimen>
+    <dimen name="height_M">48dp</dimen>
+    <dimen name="height_L">54dp</dimen>
+    <dimen name="height_XL">64dp</dimen>
+    <dimen name="height_XXL">72dp</dimen>
+</resources>
