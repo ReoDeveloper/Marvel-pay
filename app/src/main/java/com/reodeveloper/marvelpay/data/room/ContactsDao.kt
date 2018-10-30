@@ -12,4 +12,11 @@ interface  ContactsDao {
 
     @Insert(onConflict = REPLACE)
     fun insert(item: DbContact)
+
+    @Query("SELECT * from contactsTable WHERE selected = 1")
+    fun querySelectedItems(): List<DbContact>
+
+    @Query("UPDATE contactsTable SET selected = 0 WHERE selected = 1")
+    fun restorePreviousSelectedItems()
+
 }

@@ -10,7 +10,8 @@ class DbContactMapper : TwoWayMapper<DbContact, Contact>() {
             return Contact(
                 name,
                 phone,
-                image
+                image,
+                selected
             )
         }
     }
@@ -20,7 +21,8 @@ class DbContactMapper : TwoWayMapper<DbContact, Contact>() {
             return DbContact(
                 name,
                 phone,
-                avatar
+                avatar,
+                selected
             )
         }
     }

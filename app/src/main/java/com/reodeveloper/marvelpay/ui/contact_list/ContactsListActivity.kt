@@ -1,11 +1,13 @@
 package com.reodeveloper.marvelpay.ui.contact_list
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.reodeveloper.common.UseCaseProvider
 import com.reodeveloper.marvelpay.R
@@ -22,7 +24,9 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts_list)
 
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = GridLayoutManager(this, 2) as RecyclerView.LayoutManager?
+
+        btn_next_step.setOnClickListener { presenter.onNext() }
 
         presenter = ContactsListPresenter(this, UseCaseProvider.provideGetAllContactsUseCase(this))
         presenter.init()
@@ -37,7 +41,10 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
     }
 
     override fun displayItems(items: List<Contact>) {
-        recyclerView.adapter = ContactsAdapter(items) { presenter.onItemTap(it) }
+        recyclerView.adapter = ContactsAdapter(items) {
+            presenter.onItemTap(it)
+            recyclerView.adapter?.notifyDataSetChanged()
+        }
     }
 
     override fun showLoading() {
@@ -70,4 +77,16 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
         btn_next_step.isEnabled = value
     }
 
+    override fun showItemsCount(count: Int) {
+        txt_selected_count.visibility = View.VISIBLE
+        txt_selected_count.text = resources.getQuantityString(R.plurals.txt_selected_items, count, count)
+    }
+
+    override fun getContext(): Context {
+        return this
+    }
+
+    override fun goToNext() {
+        showMessage("go To Next")
+    }
 }

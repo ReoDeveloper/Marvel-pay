@@ -4,3 +4,5 @@ package com.reodeveloper.marvelpay.data
 interface Specification {
     // To be defined on the children
 }
+
+class SpecificationBySelected() : Specification

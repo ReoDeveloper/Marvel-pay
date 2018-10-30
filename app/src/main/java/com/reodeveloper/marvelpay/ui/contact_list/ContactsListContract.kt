@@ -1,5 +1,6 @@
 package com.reodeveloper.marvelpay.ui.contact_list
 
+import android.content.Context
 import com.reodeveloper.marvelpay.domain.model.Contact
 
 interface ContactsListContract {
@@ -10,7 +11,10 @@ interface ContactsListContract {
         fun showLoading()
         fun hideLoading()
         fun requestPermissions()
-        fun enableNext(value:Boolean)
+        fun enableNext(value: Boolean)
+        fun showItemsCount(count: Int)
+        fun getContext(): Context
+        fun goToNext()
     }
 
     interface Actions {

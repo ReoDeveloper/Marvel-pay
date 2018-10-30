@@ -13,13 +13,17 @@ class ContactRepository(val apiDataSource: DataSource<Contact>, val deviceDataSo
         cache?.store(item)
     }
 
+    override fun store(items: List<Contact>) {
+        cache?.store(items)
+    }
+
     override fun getAll(): List<Contact> {
         cache?.getAll()?.run { if (isNotEmpty()) return this }
         return apiDataSource.getAll().plus(deviceDataSource.getAll()).sortedBy { it.name }.also { cache?.store(it) }
     }
 
     override fun queryList(specification: Specification): List<Contact> {
-        throw NotImplementedError()
+        return cache?.queryList(specification) ?: emptyList()
     }
 
     override fun queryItem(specification: Specification): Contact {

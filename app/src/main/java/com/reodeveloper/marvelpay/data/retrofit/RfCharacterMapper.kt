@@ -9,7 +9,8 @@ class RfCharacterMapper : Mapper<ApiCharacter, Contact>() {
         return Contact(
             item.name,
             "",
-            item.thumbnail.path + "." + item.thumbnail.extension
+            item.thumbnail.path + "." + item.thumbnail.extension,
+            false
         )
     }
 }

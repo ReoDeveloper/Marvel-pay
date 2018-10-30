@@ -20,12 +20,17 @@ class ContactsAdapter(val characters: List<Contact>, private val listener: (Cont
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
         holder.bind(characters[position], listener)
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
         fun bind(item: Contact, listener: (Contact) -> Unit) = with(itemView) {
             txt_name.text = item.name
             txt_phone.text = item.phone
             img_avatar.loadUrl(item.avatar)
-            setOnClickListener { listener(item) }
+            img_tick.visibility = if(item.selected) View.VISIBLE else View.INVISIBLE
+            setOnClickListener {
+                item.selected = !item.selected
+                listener(item)
+            }
         }
     }
 }

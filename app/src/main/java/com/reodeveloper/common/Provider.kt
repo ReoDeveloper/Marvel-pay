@@ -15,6 +15,7 @@ import com.reodeveloper.marvelpay.data.room.DbContact
 import com.reodeveloper.marvelpay.data.room.DbContactMapper
 import com.reodeveloper.marvelpay.data.room.RoomDataSource
 import com.reodeveloper.marvelpay.domain.model.Contact
+import com.reodeveloper.marvelpay.domain.usecase.CacheCheckedContacts
 import com.reodeveloper.marvelpay.domain.usecase.GetAllContacts
 
 
@@ -22,6 +23,9 @@ class UseCaseProvider {
     companion object {
         fun provideGetAllContactsUseCase(context: Context) =
             GetAllContacts(RepositoryProvider.provideContactRepository(context))
+
+        fun provideCacheCheckedContacts(context: Context, items: List<Contact>) =
+            CacheCheckedContacts(RepositoryProvider.provideContactRepository(context), items)
     }
 }
 

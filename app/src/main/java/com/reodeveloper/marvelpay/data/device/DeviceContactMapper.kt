@@ -7,7 +7,7 @@ class DeviceContactMapper : Mapper<DeviceContact, Contact>() {
 
     override fun map(item: DeviceContact): Contact {
         with(item){
-            return Contact(name, number ?: "", image ?: "")
+            return Contact(name, number ?: "", image ?: "", false)
         }
     }
 }
