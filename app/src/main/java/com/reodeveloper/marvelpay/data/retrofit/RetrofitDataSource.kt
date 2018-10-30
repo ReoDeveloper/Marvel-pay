@@ -22,6 +22,16 @@ class RetrofitDataSource(val mapper: Mapper<ApiCharacter, Contact>, url: String 
 
     val apiService: RetrofitService = RetrofitClient.getClient(url)!!.create(RetrofitService::class.java)
 
+    override fun store(item: Contact) {
+        // This is method is not supported for the api
+        throw UnsupportedOperationException("This Datasource has no storing capabilities")
+    }
+
+    override fun store(items: List<Contact>) {
+        // This is method is not supported for the api
+        throw UnsupportedOperationException("This Datasource has no storing capabilities")
+    }
+
     override fun getAll(): List<Contact> {
         val ts = (System.currentTimeMillis()/1000).toString()
         val hash = MD5(ts + BuildConfig.MarvelApiSecret + API_KEY)

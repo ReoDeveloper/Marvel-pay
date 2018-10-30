@@ -37,6 +37,12 @@ dependencies {
     testImplementation 'com.squareup.okhttp:mockwebserver:2.7.5'
     testImplementation 'commons-io:commons-io:2.6'
 
+    // Room - persistence
+    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+    implementation "android.arch.persistence.room:runtime:$archRoomVersion"
+    kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
+    kapt "android.arch.persistence.room:compiler:$archRoomVersion"
+
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
