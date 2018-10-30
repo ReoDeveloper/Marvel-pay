@@ -10,6 +10,7 @@ interface ContactsListContract {
         fun showLoading()
         fun hideLoading()
         fun requestPermissions()
+        fun enableNext(value:Boolean)
     }
 
     interface Actions {
@@ -18,5 +19,6 @@ interface ContactsListContract {
         fun getRequestPermissionCode(): Int
         fun onPermissionGranted()
         fun onRequestPermissionsResult(requestCode: Int, grantResults: IntArray)
+        fun onNext()
     }
 }

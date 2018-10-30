@@ -2,7 +2,6 @@ package com.reodeveloper.marvelpay.ui.contact_list
 
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import com.reodeveloper.common.usecase.Executor
 import com.reodeveloper.common.usecase.ResultList
 import com.reodeveloper.marvelpay.R
@@ -11,6 +10,8 @@ import com.reodeveloper.marvelpay.domain.usecase.GetAllContacts
 
 class ContactsListPresenter(val view: ContactsListContract.View, val getAllContacts: GetAllContacts) :
     ContactsListContract.Actions {
+
+    var selectedItems: ArrayList<Contact> = ArrayList()
 
     companion object {
         val PERMISSIONS_REQUEST_READ_CONTACTS = 173
@@ -25,7 +26,8 @@ class ContactsListPresenter(val view: ContactsListContract.View, val getAllConta
     }
 
     override fun onItemTap(item: Contact) {
-
+        if(selectedItems.contains(item)) selectedItems.remove(item) else selectedItems.add(item)
+        view.enableNext(selectedItems.size != 0)
     }
 
     override fun getRequestPermissionCode(): Int {
@@ -58,5 +60,13 @@ class ContactsListPresenter(val view: ContactsListContract.View, val getAllConta
                         view.hideLoading()
                     }
                 })
+    }
+
+    override fun onNext() {
+        if(selectedItems.size > 0){
+            // Go to next
+        }else{
+            view.showError(R.string.txt_error_no_selected)
+        }
     }
 }

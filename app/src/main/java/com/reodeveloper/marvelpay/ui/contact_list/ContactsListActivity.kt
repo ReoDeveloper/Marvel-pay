@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.View
 import com.reodeveloper.common.UseCaseProvider
 import com.reodeveloper.marvelpay.R
@@ -38,7 +37,6 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
     }
 
     override fun displayItems(items: List<Contact>) {
-        Log.d("Reo", "received list size = " + items.size)
         recyclerView.adapter = ContactsAdapter(items) { presenter.onItemTap(it) }
     }
 
@@ -67,4 +65,9 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         presenter.onRequestPermissionsResult(requestCode, grantResults)
     }
+
+    override fun enableNext(value: Boolean) {
+        btn_next_step.isEnabled = value
+    }
+
 }

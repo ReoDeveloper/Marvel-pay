@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Marvel Pay</string>
+
     <string name="txt_error_read_contacts">Read contacts permission NOT granted</string>
+    <string name="txt_error_no_selected">At least one contact should be selected before proceeding</string>
+
+    <string name="txt_btn_next">Next</string>
+    <string name="txt_btn_prev">Prev</string>
 </resources>

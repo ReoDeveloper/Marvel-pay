@@ -2,5 +2,9 @@
 <resources>
     <color name="colorPrimary">#45b1fe</color>
     <color name="colorPrimaryDark">#127ECB</color>
-    <color name="colorAccent">#FF9245</color>
+    <color name="colorAccent">#FF9800</color> <!-- Material Orange 500 color because orange is complementary blue -->
+    <color name="colorTextIcons">#FFFFFF</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
 </resources>
