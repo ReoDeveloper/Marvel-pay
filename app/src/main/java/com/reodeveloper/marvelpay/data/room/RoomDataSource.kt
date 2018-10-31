@@ -20,16 +20,15 @@ class RoomDataSource(context: Context, val mapper: TwoWayMapper<DbContact, Conta
     }
 
     override fun getAll(): List<Contact> {
-        return mapper.map(database.contactsDao().getAll())
+        database.contactsDao().restorePreviousSelectedItems()
+        // We reset cached values, since we are asking for them now
+        return mapper.map(database.contactsDao().getAll().sortedBy { it.name })
     }
 
     override fun queryList(specification: Specification): List<Contact> {
         return when (specification) {
             is SpecificationBySelected -> {
-                val result = mapper.map(database.contactsDao().querySelectedItems())
-                // We reset cached values, since we already asked for them
-                database.contactsDao().restorePreviousSelectedItems()
-                result
+                mapper.map(database.contactsDao().querySelectedItems())
             }
             else -> emptyList()
         }

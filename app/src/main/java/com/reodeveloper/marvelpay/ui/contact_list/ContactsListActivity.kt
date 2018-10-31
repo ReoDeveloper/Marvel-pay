@@ -12,6 +12,7 @@ import android.view.View
 import com.reodeveloper.common.UseCaseProvider
 import com.reodeveloper.marvelpay.R
 import com.reodeveloper.marvelpay.domain.model.Contact
+import com.reodeveloper.marvelpay.ui.amount_selector.AmountActivity
 import com.reodeveloper.marvelpay.ui.showMessage
 import kotlinx.android.synthetic.main.activity_contacts_list.*
 
@@ -87,6 +88,6 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
     }
 
     override fun goToNext() {
-        showMessage("go To Next")
+        AmountActivity.startActivity(this)
     }
 }

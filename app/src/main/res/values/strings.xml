@@ -6,4 +6,5 @@
 
     <string name="txt_btn_next">Next</string>
     <string name="txt_btn_prev">Prev</string>
+    <string name="txt_btn_amount">Set amount</string>
 </resources>
