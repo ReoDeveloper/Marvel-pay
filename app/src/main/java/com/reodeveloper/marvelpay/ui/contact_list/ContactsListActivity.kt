@@ -25,7 +25,7 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts_list)
 
-        recyclerView.layoutManager = GridLayoutManager(this, 2) as RecyclerView.LayoutManager?
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
 
         btn_next_step.setOnClickListener { presenter.onNext() }
 

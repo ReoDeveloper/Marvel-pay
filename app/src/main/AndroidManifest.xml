@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.amount_selector.AmountActivity" />
+        <activity android:name=".ui.confirmation.ConfirmationActivity" />
     </application>
 
 </manifest>

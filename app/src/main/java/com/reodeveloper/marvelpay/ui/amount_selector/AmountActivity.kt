@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import com.reodeveloper.marvelpay.R
+import com.reodeveloper.marvelpay.ui.confirmation.ConfirmationActivity
 import com.reodeveloper.marvelpay.ui.showMessage
 import kotlinx.android.synthetic.main.activity_amount.*
 
@@ -42,6 +43,10 @@ class AmountActivity : AppCompatActivity(), AmountContract.View {
         })
     }
 
+    override fun getCurrentAmount(): String {
+        return edit_amount.text.toString()
+    }
+
     override fun showError(message: String) {
         showMessage(message)
     }
@@ -54,7 +59,7 @@ class AmountActivity : AppCompatActivity(), AmountContract.View {
         btn_next_step.isEnabled = value
     }
 
-    override fun goToNext() {
-        showMessage("Go to Next")
+    override fun goToNext(amount: Float) {
+        ConfirmationActivity.startActivity(this, amount)
     }
 }

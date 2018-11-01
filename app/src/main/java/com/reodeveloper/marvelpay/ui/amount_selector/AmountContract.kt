@@ -5,7 +5,8 @@ interface AmountContract {
         fun showError(message: String)
         fun showAmountError(message: String)
         fun enableNext(value: Boolean)
-        fun goToNext()
+        fun goToNext(amount: Float)
+        fun getCurrentAmount(): String
     }
 
     interface Actions {

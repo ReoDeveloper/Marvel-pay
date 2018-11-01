@@ -16,6 +16,6 @@ class AmountPresenter(val view: AmountContract.View) : AmountContract.Actions {
     }
 
     override fun onNext() {
-        view.goToNext()
+        view.goToNext(view.getCurrentAmount().toFloat())
     }
 }
