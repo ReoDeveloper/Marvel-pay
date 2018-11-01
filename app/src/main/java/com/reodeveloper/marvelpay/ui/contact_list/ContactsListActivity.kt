@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.reodeveloper.common.UseCaseProvider
@@ -26,10 +27,30 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
         setContentView(R.layout.activity_contacts_list)
 
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    val visibleItemCount = recyclerView.getChildCount()
+                    val totalItemCount = recyclerView.layoutManager!!.getItemCount()
+                    val pastVisiblesItems =
+                        (recyclerView.layoutManager!! as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        presenter.lastItemReached()
+                    }
+                }
+            }
+        })
+
+        swipeContainer.setOnRefreshListener {
+            presenter.refresh()
+        }
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent)
+
 
         btn_next_step.setOnClickListener { presenter.onNext() }
 
-        presenter = ContactsListPresenter(this, UseCaseProvider.provideGetAllContactsUseCase(this))
+        presenter = ContactsListPresenter(this, UseCaseProvider.provideGetAllContactsByPageUseCase(this))
         presenter.init()
     }
 
@@ -42,18 +63,25 @@ class ContactsListActivity : AppCompatActivity(), ContactsListContract.View {
     }
 
     override fun displayItems(items: List<Contact>) {
-        recyclerView.adapter = ContactsAdapter(items) {
+        recyclerView.adapter?.run {
+            (this as ContactsAdapter).clear()
+        }
+        recyclerView.adapter = ContactsAdapter(items.toMutableList()) {
             presenter.onItemTap(it)
             recyclerView.adapter?.notifyDataSetChanged()
         }
     }
 
+    override fun addItems(items: List<Contact>) {
+        (recyclerView.adapter as ContactsAdapter).addItems(items)
+    }
+
     override fun showLoading() {
-        progressBar.visibility = View.VISIBLE
+        swipeContainer.isRefreshing = true
     }
 
     override fun hideLoading() {
-        progressBar.visibility = View.GONE
+        swipeContainer.isRefreshing = false
     }
 
     override fun requestPermissions() {

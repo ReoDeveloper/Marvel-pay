@@ -8,6 +8,7 @@ interface ContactsListContract {
         fun showError(message: String)
         fun showError(message: Int)
         fun displayItems(items: List<Contact>)
+        fun addItems(items: List<Contact>)
         fun showLoading()
         fun hideLoading()
         fun requestPermissions()
@@ -19,10 +20,12 @@ interface ContactsListContract {
 
     interface Actions {
         fun init()
+        fun refresh()
         fun onItemTap(item: Contact)
         fun getRequestPermissionCode(): Int
         fun onPermissionGranted()
         fun onRequestPermissionsResult(requestCode: Int, grantResults: IntArray)
         fun onNext()
+        fun lastItemReached()
     }
 }

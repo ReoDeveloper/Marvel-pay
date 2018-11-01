@@ -8,11 +8,13 @@ import com.reodeveloper.common.usecase.ResultList
 import com.reodeveloper.common.usecase.ResultUnit
 import com.reodeveloper.marvelpay.R
 import com.reodeveloper.marvelpay.domain.model.Contact
-import com.reodeveloper.marvelpay.domain.usecase.CacheCheckedContacts
-import com.reodeveloper.marvelpay.domain.usecase.GetAllContacts
+import com.reodeveloper.marvelpay.domain.usecase.GetAllContactsByPage
 
-class ContactsListPresenter(val view: ContactsListContract.View, val getAllContacts: GetAllContacts) :
+class ContactsListPresenter(val view: ContactsListContract.View, val getAllContactsByPage: GetAllContactsByPage) :
     ContactsListContract.Actions {
+
+    var hasMorePages = true
+    var isAlreadyLoading = false
 
     var selectedItems: ArrayList<Contact> = ArrayList()
 
@@ -26,6 +28,10 @@ class ContactsListPresenter(val view: ContactsListContract.View, val getAllConta
         } else {
             onPermissionGranted()
         }
+    }
+
+    override fun refresh() {
+        view.displayItems(emptyList())
     }
 
     override fun onItemTap(item: Contact) {
@@ -50,20 +56,51 @@ class ContactsListPresenter(val view: ContactsListContract.View, val getAllConta
 
     override fun onPermissionGranted() {
         view.showLoading()
+        isAlreadyLoading = true
         Executor.getInstance()
             .execute(
-                getAllContacts,
+                getAllContactsByPage,
                 object : ResultList<Contact> {
                     override fun success(items: List<Contact>) {
                         view.displayItems(items)
                         view.hideLoading()
+                        isAlreadyLoading = false
                     }
 
                     override fun error(message: String) {
                         view.showError(message)
                         view.hideLoading()
+                        isAlreadyLoading = false
                     }
                 })
+    }
+
+    override fun lastItemReached() {
+        if (hasMorePages && !isAlreadyLoading) {
+            view.showLoading()
+            isAlreadyLoading = true
+            getAllContactsByPage.page++
+            Executor.getInstance()
+                .execute(
+                    getAllContactsByPage,
+                    object : ResultList<Contact> {
+                        override fun success(items: List<Contact>) {
+                            if (items.isNotEmpty()) {
+                                view.addItems(items)
+                            } else {
+                                hasMorePages = false
+                            }
+                            view.hideLoading()
+                            isAlreadyLoading = false
+                        }
+
+                        override fun error(message: String) {
+                            view.showError(message)
+                            view.hideLoading()
+                            isAlreadyLoading = false
+                        }
+                    })
+        }
     }
 
     override fun onNext() {

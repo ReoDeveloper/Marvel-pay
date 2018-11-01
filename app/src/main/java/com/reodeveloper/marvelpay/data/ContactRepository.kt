@@ -23,7 +23,10 @@ class ContactRepository(val apiDataSource: DataSource<Contact>, val deviceDataSo
     }
 
     override fun queryList(specification: Specification): List<Contact> {
-        return cache?.queryList(specification) ?: emptyList()
+        return when (specification) {
+            is SpecificationByPage -> apiDataSource.queryList(specification).sortedBy { it.name }.also { cache?.store(it) }
+            else -> cache?.queryList(specification) ?: emptyList()
+        }
     }
 
     override fun queryItem(specification: Specification): Contact {

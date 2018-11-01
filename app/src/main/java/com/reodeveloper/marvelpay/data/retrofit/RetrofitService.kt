@@ -13,4 +13,14 @@ interface RetrofitService {
         @Query("ts") ts: String,
         @Query("hash") hash: String
     ): Call<ApiResult>
+
+    @GET("characters")
+    fun getCharactersByOffset(
+        @Query("apikey") apiKey: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
+        @Query("orderBy") orderBy: String,
+        @Query("ts") ts: String,
+        @Query("hash") hash: String
+    ): Call<ApiResult>
 }

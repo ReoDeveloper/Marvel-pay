@@ -5,4 +5,5 @@ interface Specification {
     // To be defined on the children
 }
 
-class SpecificationBySelected() : Specification
+class SpecificationBySelected : Specification
+class SpecificationByPage(val page: Int) : Specification
